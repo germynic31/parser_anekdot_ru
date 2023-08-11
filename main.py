@@ -1,19 +1,19 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 
 
-def anekdot():
+def get_jokes():
     url = 'https://www.anekdot.ru/last/anekdot/'
     r = requests.get(url=url)
 
-    soup = BeautifulSoup(r.text, 'html.parser')
+    soup = bs(r.text, 'html.parser')
 
-    anecdot = soup.find_all('div', class_="text")
+    joke = soup.find_all('div', class_="text")
 
     i = 0
 
-    if i < len(anecdot):
-        for article in anecdot:
+    if i < len(joke):
+        for article in joke:
             i += 1
             article_title = article.text.strip() + '\n\n'
             print(article_title)
@@ -21,4 +21,4 @@ def anekdot():
                 file.write(article_title)
 
 
-anekdot()
+get_jokes()
