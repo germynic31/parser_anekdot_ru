@@ -16,9 +16,9 @@ def get_jokes():
         for article in joke:
             i += 1
             article_title = article.text.strip() + '\n\n'
-            print(article_title)
             with open("anekdoti.txt", "a", encoding='utf-8') as file:
                 file.write(article_title)
+        print('Все анекдоты в текстовом документе :)')
 
 
 get_jokes()
