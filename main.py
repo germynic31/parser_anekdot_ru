@@ -4,21 +4,21 @@ from bs4 import BeautifulSoup as bs
 
 def get_jokes():
     url = 'https://www.anekdot.ru/last/anekdot/'
-    r = requests.get(url=url)
+    try:
+        r = requests.get(url)
+        r.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        return print(f'Ошибка при запросе страницы: {e}')
 
     soup = bs(r.text, 'html.parser')
 
-    joke = soup.find_all('div', class_="text")
+    jokes = soup.find_all('div', class_="text")
 
-    i = 0
-
-    if i < len(joke):
-        for article in joke:
-            i += 1
-            article_title = article.text.strip() + '\n\n'
-            with open("anekdoti.txt", "a", encoding='utf-8') as file:
-                file.write(article_title)
-        print('Все анекдоты в текстовом документе :)')
+    with open("anekdoti.txt", "w", encoding='utf-8') as file:
+        for joke in jokes:
+            article_title = joke.text.strip() + '\n\n'
+            file.write(article_title)
+    print('Все анекдоты в текстовом документе :)')
 
 
 get_jokes()
